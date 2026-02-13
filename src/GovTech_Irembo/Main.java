@@ -13,7 +13,7 @@ public class Main {
             UserManager userManager = new UserManager();
             ApplicationManager appManager = new ApplicationManager();
 
-            System.out.println("=== Welcome to GovTech Irembo System ===");
+            System.out.println("-------Welcome to GovTech Irembo System -------");
             System.out.println("1. Sign Up");
             System.out.println("2. Login");
 
