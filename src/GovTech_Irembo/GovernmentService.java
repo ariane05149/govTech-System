@@ -12,5 +12,7 @@ public  abstract class GovernmentService {
     public int getServiceFee() {
         return ServiceFee;
     }
-    ;
+    public String getServiceName(){
+        return serviceName;
+    }
 }

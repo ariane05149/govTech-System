@@ -3,15 +3,15 @@ package GovTech_Irembo;
 public abstract class Citizen {
     protected  String fullname;
     protected String phoneNumber;
-    protected String email;
+    protected String emailAddress;
 
-    public Citizen(String name, String phone, String Em){
-        this.fullname=name;
+    public Citizen(String fname, String phone, String mail){
+        this.fullname=fname;
         this.phoneNumber=phone;
-        this.email=Em;
+        this.emailAddress=mail;
     }
 public String getFullname(){
         return fullname;
 }
-public abstract String getNationalityType();
+public abstract String getIdentificationNumber();
 }
