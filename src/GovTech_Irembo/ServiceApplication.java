@@ -6,12 +6,14 @@ public class ServiceApplication {
     private Citizen applicant;
     private GovernmentService serv;
     private ApplicationStatus stat;
+    private String payment;
 
     public ServiceApplication(Citizen Capplicant, GovernmentService service) {
         this.applicantId = counter++;
         this.applicant = Capplicant;
         this.serv = service;
         this.stat = ApplicationStatus.Pending;
+        this.payment = "NOT_PAID";
     }
 
     public int getApplicantId() {
@@ -26,19 +28,32 @@ public class ServiceApplication {
         return serv;
     }
 
-    public void approve()
-            throws InvalidStatusException {
-        if (stat== ApplicationStatus.Approved) {
-            throw new InvalidStatusException("Already Approved");
+    public void makePayment(double amount) throws Exception {
+        if (amount != serv.getServiceFee()) {
+            throw new Exception("payment must be " + serv.getServiceFee());
         }
-        stat=ApplicationStatus.Approved;
+        payment = "PAID";
+    }
+
+    public void approve() throws Exception {
+        if (!payment.equals("PAID")) {
+            throw new Exception("payment not completed");
         }
-        @Override
-    public String toString(){
-        return applicantId+","+
-                applicant.getFullname()+ "," +
-                applicant.getIdentificationNumber()+ ","+
-                serv.getServiceName()+","+serv.getServiceFee()+","+
-                stat;
+        if (stat != ApplicationStatus.Pending) {
+            throw new Exception("only approval for pending applicants");
+        }
+        stat = ApplicationStatus.Approved;
+    }
+
+    public void reject() throws Exception {
+        if (stat != ApplicationStatus.Pending) {
+            throw new Exception("Only pending applications can be rejected.");
+        }
+        stat = ApplicationStatus.Rejected;
+    }
+
+    @Override
+    public String toString() {
+        return applicantId + "," + applicant.getFullname() + "," + applicant.getIdentificationNumber() + "," + serv.getServiceName() + "," + serv.getServiceFee() + "," + stat + "," + payment;
     }
 }

@@ -4,58 +4,46 @@ import java.io.*;
 import java.util.ArrayList;
 
 public class ApplicationManager {
+    private ArrayList<ServiceApplication> applications;
+    private int counter = 1;
 
-    private ArrayList<ServiceApplication> appList =
-            new ArrayList<>();
-
-    private final String FILE_NAME = "applications.txt";
-
-    public void addApplication(ServiceApplication app)
-            throws IOException {
-
-        appList.add(app);
-        saveToFile();
+    public ApplicationManager() {
+        applications = new ArrayList<>();
     }
 
-    public void approveApplication(int id)
-            throws ApplicationNotFoundException,
-            InvalidStatusException {
+    public ServiceApplication createApplication(Citizen citizen, GovernmentService service) {
+        ServiceApplication app = new ServiceApplication(citizen, service);
+        applications.add(app);
+        return app;
+    }
 
-        for (ServiceApplication app : appList) {
-
+    public void approve(int id) throws Exception {
+        for (ServiceApplication app : applications) {
             if (app.getApplicantId() == id) {
                 app.approve();
                 return;
             }
         }
+        throw new Exception("Application not found.");
+    }
 
-        throw new ApplicationNotFoundException("Application not found.");
+    public void reject(int id) throws Exception {
+        for (ServiceApplication app : applications) {
+            if (app.getApplicantId() == id) {
+                app.reject();
+                return;
+            }
+        }
+        throw new Exception("Application not found.");
     }
 
     public double calculateRevenue() {
-
         double total = 0;
-
-        for (ServiceApplication app : appList) {
-            if (app.getStat() == ApplicationStatus.Approved) {
+        for (ServiceApplication app : applications) {
+            if (app.getStat() == ApplicationStatus.Approved && app.getserv().getServiceFee() > 0) {
                 total += app.getserv().getServiceFee();
             }
         }
-
         return total;
     }
-
-    private void saveToFile() throws IOException {
-
-        BufferedWriter writer =
-                new BufferedWriter(new FileWriter(FILE_NAME));
-
-        for (ServiceApplication app : appList) {
-            writer.write(app.toString());
-            writer.newLine();
-        }
-
-        writer.close();
-    }
-
 }
