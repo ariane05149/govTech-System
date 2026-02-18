@@ -12,8 +12,12 @@ public class ServiceApplication {
         this.applicantId = counter++;
         this.applicant = Capplicant;
         this.serv = service;
+
         this.stat = ApplicationStatus.Pending;
         this.payment = "NOT_PAID";
+
+        this.stat=ApplicationStatus.Pending;
+
     }
 
     public int getApplicantId() {
